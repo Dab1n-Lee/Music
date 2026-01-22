@@ -2,9 +2,10 @@ import os
 import pandas as pd
 import numpy as np
 import gzip
+import io
+import librosa
 
 from torchvision.datasets import VisionDataset
-from scipy.io import wavfile
 
 class AudioSet(VisionDataset):
     def __init__(self, root, transform = None, target_transform = None, train=True):
@@ -51,9 +52,11 @@ class AudioSet(VisionDataset):
         
     def loader(self, path):
         with gzip.open(os.path.join(self._dir, path), "rb") as f:
-            _, x = wavfile.read(f)
-        if len(x.shape) > 1:
-            return np.copy(x[:, 0])
+            data = f.read()
+        # librosa를 사용하여 메모리에서 WAV 파일 읽기
+        wav_file = io.BytesIO(data)
+        x, sr = librosa.load(wav_file, sr=None, mono=True)
+        # librosa는 이미 mono로 로드하므로 추가 처리 불필요
         return np.copy(x)
     
     def __getitem__(self, index):
@@ -138,9 +141,11 @@ class AudioSet2(VisionDataset):
         
     def loader(self, path):
         with gzip.open(os.path.join(self._dir, path), "rb") as f:
-            _, x = wavfile.read(f)
-        if len(x.shape) > 1:
-            return np.copy(x[:, 0])
+            data = f.read()
+        # librosa를 사용하여 메모리에서 WAV 파일 읽기
+        wav_file = io.BytesIO(data)
+        x, sr = librosa.load(wav_file, sr=None, mono=True)
+        # librosa는 이미 mono로 로드하므로 추가 처리 불필요
         return np.copy(x)
     
     def __getitem__(self, index):
@@ -228,9 +233,11 @@ class AudioSet_shuffle(VisionDataset):
         
     def loader(self, path):
         with gzip.open(os.path.join(self._dir, path), "rb") as f:
-            _, x = wavfile.read(f)
-        if len(x.shape) > 1:
-            return np.copy(x[:, 0])
+            data = f.read()
+        # librosa를 사용하여 메모리에서 WAV 파일 읽기
+        wav_file = io.BytesIO(data)
+        x, sr = librosa.load(wav_file, sr=None, mono=True)
+        # librosa는 이미 mono로 로드하므로 추가 처리 불필요
         return np.copy(x)
     
     def __getitem__(self, index):
@@ -309,9 +316,11 @@ class AudioSet3(VisionDataset):
         
     def loader(self, path):
         with gzip.open(os.path.join(self._dir, path), "rb") as f:
-            _, x = wavfile.read(f)
-        if len(x.shape) > 1:
-            return np.copy(x[:, 0])
+            data = f.read()
+        # librosa를 사용하여 메모리에서 WAV 파일 읽기
+        wav_file = io.BytesIO(data)
+        x, sr = librosa.load(wav_file, sr=None, mono=True)
+        # librosa는 이미 mono로 로드하므로 추가 처리 불필요
         return np.copy(x)
     
     def __getitem__(self, index):
